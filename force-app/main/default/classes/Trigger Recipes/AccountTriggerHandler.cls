@@ -102,7 +102,7 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
         for (Account acct : this.triggerNew) {
             // You can call addError('msg') on records that fail validation.
             // Doing so prevents them from being saved.
-            if (acct.ShippingState?.length() > 2) {
+            if (this.hasShippingStateLongerThanTwo(acct)) {
                 acct.addError('Shipping State Length exceeds maximum allowed');
             }
             acct.ShippingStreet += ' before update trigger';
@@ -281,5 +281,9 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
                 dmle.getMessage()
             );
         }
+    }
+
+    private Boolean hasShippingStateLongerThanTwo(Account acct) {
+        return acct != null && acct.ShippingState != null && acct.ShippingState.length() > 2;
     }
 }
