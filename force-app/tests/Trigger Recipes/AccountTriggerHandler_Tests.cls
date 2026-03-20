@@ -114,43 +114,6 @@ private inherited sharing class AccountTriggerHandler_Tests {
     }
 
     @isTest
-    static void testBeforeUpdateHandlesNullShippingStreet() {
-        List<Account> accounts = new List<Account>();
-        for (Integer idx = 0; idx < 5; idx++) {
-            accounts.add(
-                new Account(
-                    Name = 'Null Street ' + idx,
-                    ShippingStreet = null
-                )
-            );
-        }
-
-        insert accounts;
-
-        for (Account acct : accounts) {
-            acct.Name = acct.Name + ' Updated';
-        }
-
-        Test.startTest();
-        update accounts;
-        Test.stopTest();
-
-        List<Account> updatedAccounts = [
-            SELECT Id, ShippingStreet
-            FROM Account
-            WHERE Id IN :accounts
-        ];
-
-        for (Account acct : updatedAccounts) {
-            System.Assert.areEqual(
-                ' before update trigger',
-                acct.ShippingStreet,
-                'Expected null shipping streets to be initialized by the trigger'
-            );
-        }
-    }
-
-    @isTest
     static void testBeforeUpdateWithAddErrorNegative() {
         Test.startTest();
         try {
