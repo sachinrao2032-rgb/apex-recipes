@@ -105,7 +105,7 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
             if (this.hasShippingStateLongerThanTwo(acct)) {
                 acct.addError('Shipping State Length exceeds maximum allowed');
             }
-            acct.ShippingStreet += ' before update trigger';
+            acct.ShippingStreet = this.appendBeforeUpdateMarker(acct.ShippingStreet);
         }
         // Remember, because this is a before context trigger, we don't need to
         // DML these records.
@@ -285,5 +285,10 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 
     private Boolean hasShippingStateLongerThanTwo(Account acct) {
         return acct != null && acct.ShippingState != null && acct.ShippingState.length() > 2;
+    }
+
+    private String appendBeforeUpdateMarker(String currentValue) {
+        String safeValue = currentValue == null ? '' : currentValue;
+        return safeValue + ' before update trigger';
     }
 }
