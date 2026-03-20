@@ -6,6 +6,7 @@
  * @see AccountServiceLayer
  */
 public with sharing class AccountTriggerHandler extends TriggerHandler {
+    private static final String BEFORE_UPDATE_MARKER = ' before update trigger';
     private List<Account> triggerNew;
     private List<Account> triggerOld;
     private Map<Id, Account> triggerMapNew;
@@ -300,6 +301,9 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 
     private String appendBeforeUpdateMarker(String currentValue) {
         String safeValue = currentValue == null ? '' : currentValue;
-        return safeValue + ' before update trigger';
+        if (safeValue.endsWith(BEFORE_UPDATE_MARKER)) {
+            return safeValue;
+        }
+        return safeValue + BEFORE_UPDATE_MARKER;
     }
 }
