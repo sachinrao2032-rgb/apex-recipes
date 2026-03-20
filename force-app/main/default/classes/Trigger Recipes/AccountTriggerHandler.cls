@@ -102,10 +102,14 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
         for (Account acct : this.triggerNew) {
             // You can call addError('msg') on records that fail validation.
             // Doing so prevents them from being saved.
-            if (acct.ShippingState?.length() > 2) {
+            if (this.hasShippingStateLongerThanTwo(acct)) {
                 acct.addError('Shipping State Length exceeds maximum allowed');
             }
-            acct.ShippingStreet += ' before update trigger';
+            if (this.hasShippingStreetChanged(acct)) {
+                acct.ShippingStreet = this.appendBeforeUpdateMarker(
+                    acct.ShippingStreet
+                );
+            }
         }
         // Remember, because this is a before context trigger, we don't need to
         // DML these records.
@@ -281,5 +285,29 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
                 dmle.getMessage()
             );
         }
+    }
+
+    private Boolean hasShippingStateLongerThanTwo(Account acct) {
+        return acct != null && acct.ShippingState != null && acct.ShippingState.length() > 2;
+    }
+
+    private Boolean hasShippingStreetChanged(Account acct) {
+        if (acct == null || acct.Id == null || this.triggerMapOld == null) {
+            return true;
+        }
+        Account oldAcct = this.triggerMapOld.get(acct.Id);
+        String oldValue = oldAcct == null ? null : oldAcct.ShippingStreet;
+        if (oldValue == null && acct.ShippingStreet == null) {
+            return false;
+        }
+        if (oldValue == null || acct.ShippingStreet == null) {
+            return true;
+        }
+        return oldValue != acct.ShippingStreet;
+    }
+
+    private String appendBeforeUpdateMarker(String currentValue) {
+        String safeValue = currentValue == null ? '' : currentValue;
+        return safeValue + ' before update trigger';
     }
 }

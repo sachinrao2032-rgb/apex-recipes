@@ -235,6 +235,8 @@
         >ACCOUNT.ADDRESS1_CITY</customTabListAdditionalFields>
         <customTabListAdditionalFields
         >ACCOUNT.PHONE1</customTabListAdditionalFields>
+        <customTabListAdditionalFields
+        >ACCOUNT.INDUSTRY</customTabListAdditionalFields>
         <lookupDialogsAdditionalFields
         >ACCOUNT.NAME</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields
@@ -243,6 +245,8 @@
         >CORE.USERS.ALIAS</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields
         >ACCOUNT.TYPE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields
+        >ACCOUNT.INDUSTRY</lookupDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields
         >ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields
@@ -253,6 +257,8 @@
         >ACCOUNT.TYPE</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields
         >ACCOUNT.PHONE1</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields
+        >ACCOUNT.INDUSTRY</lookupPhoneDialogsAdditionalFields>
         <searchResultsAdditionalFields
         >ACCOUNT.NAME</searchResultsAdditionalFields>
         <searchResultsAdditionalFields
@@ -261,6 +267,8 @@
         >ACCOUNT.PHONE1</searchResultsAdditionalFields>
         <searchResultsAdditionalFields
         >CORE.USERS.ALIAS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields
+        >ACCOUNT.INDUSTRY</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
