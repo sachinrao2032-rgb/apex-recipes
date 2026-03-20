@@ -59,7 +59,7 @@ public class DMLRecipes_Tests {
     static void testInsertInUserModeNegative() {
         Test.startTest();
         try {
-            // Inserting a record with a null name should fail
+            // Inserting a record with a null name should fail and test
             DMLRecipes.insertAccountViaInsertKeywordInUserMode(null);
             System.Assert.fail('Expected CustomDmlException');
         } catch (DMLRecipes.CustomDmlException theException) {
