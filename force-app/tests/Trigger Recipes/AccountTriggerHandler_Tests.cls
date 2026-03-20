@@ -48,6 +48,37 @@ private inherited sharing class AccountTriggerHandler_Tests {
     }
 
     @isTest
+    static void testBeforeUpdateHandlesNullShippingStreet() {
+        Account[] testData = (Account[]) TestFactory.createSObjectList(
+            new Account(Name = 'NullStreetAccount'),
+            5,
+            true
+        );
+
+        for (Account acct : testData) {
+            acct.ShippingStreet = null;
+        }
+
+        Test.startTest();
+        update testData;
+        Test.stopTest();
+
+        Account[] updatedAccounts = [
+            SELECT Id, ShippingStreet
+            FROM Account
+            WHERE Id IN :testData
+        ];
+
+        for (Account acct : updatedAccounts) {
+            System.Assert.areEqual(
+                ' before update trigger',
+                acct.ShippingStreet,
+                'Expected before update helper to handle null values'
+            );
+        }
+    }
+
+    @isTest
     static void testAfterInsertPositive() {
         // There's debate on where to test the functionality of this code.
         // Some might argue it's in the AccountServiceLayer_tests
