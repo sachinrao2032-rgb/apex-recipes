@@ -6,6 +6,7 @@
  * @see AccountServiceLayer
  */
 public with sharing class AccountTriggerHandler extends TriggerHandler {
+    private static final String BEFORE_UPDATE_MARKER = ' before update trigger';
     private List<Account> triggerNew;
     private List<Account> triggerOld;
     private Map<Id, Account> triggerMapNew;
@@ -100,12 +101,13 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
         // classes and methods it's entirely possible to place your trigger
         // logic directly in this method. Especially if that logic is short.
         for (Account acct : this.triggerNew) {
+            acct.ShippingState = this.normalizeState(acct.ShippingState);
             // You can call addError('msg') on records that fail validation.
             // Doing so prevents them from being saved.
-            if (acct.ShippingState?.length() > 2) {
+            if (this.hasShippingStateLongerThanTwo(acct)) {
                 acct.addError('Shipping State Length exceeds maximum allowed');
             }
-            acct.ShippingStreet += ' before update trigger';
+            acct.ShippingStreet = this.appendBeforeUpdateMarker(acct.ShippingStreet);
         }
         // Remember, because this is a before context trigger, we don't need to
         // DML these records.
@@ -281,5 +283,27 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
                 dmle.getMessage()
             );
         }
+    }
+
+    private String normalizeState(String stateValue) {
+        if (String.isBlank(stateValue)) {
+            return null;
+        }
+        return stateValue.trim();
+    }
+
+    private Boolean hasShippingStateLongerThanTwo(Account acct) {
+        if (acct == null || String.isBlank(acct.ShippingState)) {
+            return false;
+        }
+        return acct.ShippingState.length() > 2;
+    }
+
+    private String appendBeforeUpdateMarker(String currentValue) {
+        String safeValue = currentValue == null ? '' : currentValue;
+        if (safeValue.endsWith(BEFORE_UPDATE_MARKER)) {
+            return safeValue;
+        }
+        return safeValue + BEFORE_UPDATE_MARKER;
     }
 }

@@ -1,6 +1,6 @@
 @isTest
 private inherited sharing class DynamicSOQLRecipes_Tests {
-    // Test Setup methods are called before every test method
+    // Test Setup methods are called before every test method and all test methods in the class
     @TestSetup
     static void makeData() {
         Account acct = TestDataHelpers.genAccountWithOptions(true, 'MX');
